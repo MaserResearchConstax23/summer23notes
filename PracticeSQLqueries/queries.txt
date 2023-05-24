@@ -1,0 +1,73 @@
+Practice 1. What objects has the SDSS seen in a smaller area of the sky near 
+ra = 194.5, dec = 2.5 (the same area you searched in the previous query)?
+
+Modify the previous query so it will return ra and dec of objects where the ra
+is between 194.25 and 194.75 and the dec is between 2.25 and 2.75. About how
+many objects did the query return? Does this seem to make sense, given the
+smaller area you searched here?
+
+
+select ra, dec, specObjID, objTypeName
+from SpecObj
+where ra BETWEEN 194.25 and 194.75 AND
+dec BETWEEN 2.25 and 2.75
+
+
+
+Practice 2. Which of the objects you found in Practice 1 are galaxies?
+
+Open the Schema Browser. Click on views and select SpecObj. You will see a list
+of all the columns in the SpecObj table. If you click on the  Link to PhotoType
+symbol, you will see the various values that column may have. For instance, the
+"specClass" column may contain numbers that correspond to stars, galaxies,
+quasars, etc. Modify your query so that it returns the ra, dec, and best object
+ID for galaxies (and only galaxies) whose ra is between 194.25 and 194.75 and
+whose dec is between 2.25 and 2.75.
+
+select ra, dec, specObjID, objTypeName
+from SpecObj
+where ra BETWEEN 194.25 and 194.75 AND
+dec BETWEEN 2.25 and 2.75 AND
+objTypeName = 'GALAXY'
+
+
+
+
+Practice 3. What are the reddest galaxies in the area of sky near ra = 195?
+
+Write a query to search for galaxies between ra = 194.9 and ra = 195.1 brighter
+than g = 18.0 for which u - g > 2.2. Retrieve the Object ID, ra, dec, and the
+five final magnitudes.
+
+
+select objID,ra,dec,u,g,r,i,z
+from PhotoObj
+where ra BETWEEN 194.9 and 195.1 AND
+g > 18.0 AND
+u-g > 2.2
+
+
+
+Practice 4. What are the highest-redshift quasars in the SDSS database?
+
+Write a query to search for quasars for which we have obtained spectra (search the specObj table) with redshifts greater than 4.5 and high confidence measurements (zconf > .35). Be sure to retrieve both quasars and the objects classified as high-redshift quasars. Retrieve each quasar's Photo ID, ra, dec, and redshift.
+
+
+
+select bestObjID,z,zconf, specClass
+from SpecObj
+where z > 4.5 AND
+zconf > .35 AND
+specClass = 3 OR specClass = 4
+
+How many results do you get?
+
+select COUNT(*) as result_count
+from SpecObj
+where z > 4.5 AND
+zconf > .35 AND
+specClass = 3 OR specClass = 4
+
+
+result_count
+7875

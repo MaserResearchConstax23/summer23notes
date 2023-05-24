@@ -360,7 +360,17 @@ May 24 2023
 
     Continuing SQL ...
 
+    When comparing string values, use 'SINGLE_QUOTES'
     
+    Common SpecObj (Spectroscopically analyzed objects) table columns
+        http://cas.sdss.org/dr7/en/help/howto/search/commonsearch.asp#top
+    
+        and for PhotoObj:
+        http://cas.sdss.org/dr7/en/help/howto/search/commonsearch.asp#top
+
+        
+    
+
 
 
 
