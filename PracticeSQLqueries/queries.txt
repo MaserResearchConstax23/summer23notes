@@ -50,7 +50,11 @@ u-g > 2.2
 
 Practice 4. What are the highest-redshift quasars in the SDSS database?
 
-Write a query to search for quasars for which we have obtained spectra (search the specObj table) with redshifts greater than 4.5 and high confidence measurements (zconf > .35). Be sure to retrieve both quasars and the objects classified as high-redshift quasars. Retrieve each quasar's Photo ID, ra, dec, and redshift.
+Write a query to search for quasars for which we have obtained spectra (search
+the specObj table) with redshifts greater than 4.5 and high confidence
+measurements (zconf > .35). Be sure to retrieve both quasars and the objects
+classified as high-redshift quasars. Retrieve each quasar's Photo ID, ra, dec,
+and redshift.
 
 
 
@@ -71,3 +75,53 @@ specClass = 3 OR specClass = 4
 
 result_count
 7875
+
+
+Practice 5. How can you look up image data, plates and spectra of moderately
+bright nearby galaxies?
+
+Write a query to find galaxies for which we have spectra that have g magnitude
+between 17 and 17.4 and redshift less than 0.05. For each galaxy, retrieve the
+object ID, the five magnitudes (u,g,r,i,z), the redshift, the plate/MJD number,
+and the fiber number.
+
+select PhotoObj.g as g_mag,
+PhotoObj.objID as ID,
+PhotoObj.u as u_mag,
+PhotoObj.r as r_mag,
+PhotoObj.i as i_mag,
+PhotoObj.z as z_mag,
+SpecObj.z as redshift,
+SpecObj.plate as Plate_num,
+SpecObj.fiberID as Fiber_Num
+from PhotoObj,SpecObj
+where PhotoObj.g BETWEEN 17 and 17.4 AND
+SpecObj.z < .05
+
+
+
+Practice 6. What types (templates) of quasars have high redshifts?
+
+Write a query to find the template number matched to all high redshift quasars
+(redshift greater than 2.5). HINT: template number is in the Cross-Correlation
+Redshifts table. Retrieve the objects' ra, dec, u, g, r, i, z, redshift, and
+tempno.
+
+
+select red.specObjID,
+red.tempNo,
+SpecObj.specObjID,
+SpecObj.ra,
+SpecObj.dec,
+PhotoObj.u,
+PhotoObj.g,
+PhotoObj.r,
+PhotoObj.i,
+PhotoObj.z,
+SpecObj.z as redshift
+
+from SpecObj, XCRedshift red, PhotoObj
+where SpecObj.specObjID = red.specObjID AND
+PhotoObj.objID = SpecObj.bestObjID AND
+SpecObj.z > 2.5
+
