@@ -1,0 +1,366 @@
+
+Notes
+
+May 22, 2023
+
+    Celestial Coordinates
+
+        RA (right ascension) - positive is CCW, 360 deg == 24 hrs
+
+        Declination - in degrees minutes seconds
+
+    Laser , maser
+
+        Laser means "Light amplification by Stimulated Emmsion of Radiation"
+
+        In lasers, all light has similar wavelengths and the waves travel together
+        in phase
+
+        Maser means "Microwave/molecular amplification by stimulated emission of
+        radiation", and is a subset of lasers in the microwave or other
+        invisible spectrum wavelength range. 
+
+        Despite their name, masers are not limited to microwave range, and can
+        exist in other frequencies (radio and IR)
+
+        Laser are specifically in the visible spectrum
+
+        Natural masers are referred to as "superradiant emmision" since they are
+        not artificial masers
+
+        There are masers produced by galaxies which are much more powerful than
+        masers produced by stars; they are called "megamasers"
+
+        Water masers emit as 22 GHz from a population inversion in which more of
+        the molecules are more excited than their natural state than not.
+
+    Questions:
+
+    1) If the light travels at a constant rate, and the universe is expanding
+    exponentially, and the light passes through expanding space, then doesn't
+    that mean that objects are actually much farther than the light-year
+    measurement we can read currently, due to already-traveled space expanding
+    behind the traveling light? I would imagine that a correction becomes
+    necessary especially for objects that are viewed in the distant past/edge of
+    the visible universe. Is the correction to simply let a unit expand at the
+    same rate as the universe expands, such that, in the past, a light-year was
+    much smaller? 
+    
+    - there are different models of the universe's distance scales
+    as they relate to time, the important thing is to use the same scale when
+    doing comparisons
+
+    2) Since time passes more slowly in areas of higher matter density
+    (gravity), then the early universe must have had a very slow rate of time
+    passage compared to our present; so does that mean that the universe could
+    be thought of as much younger than it appears?
+
+    --------
+    Important Formulas:
+        λ = wavelength
+        c = speed of light
+        ν = frequency
+        E = Energy
+        h = planks constant = 6.62607015 × 10^-34 m^2 kg / s
+        T = temperature in Kelvin
+        F = Energy Flux ... J/m^2/s
+        σ = Stephan-Boltzman constant = 5.67E-8 W/m^2/K^4
+        I_tot = total intensity = Energy Flux
+        
+        
+        λ = c/ν
+        E = h ν
+
+        Light Intensity = energy/(time*area)
+
+ 
+
+    Black body - Anything that has a Temperature is a "Black Body". 
+    
+    color can be determined from λ
+
+    - All objects emit heat radiation, and the intensity of the radiation
+    reveals its temperature
+
+    - For black bodies, which have a characteristic shape of radiation, the
+    wavelength at which there is the maximum intensity relates to the
+    temperature of the black body. Stars are black bodies
+
+    1) Wien's Law - Hotter objects emit radiation with shorter λ and higher ν
+
+        λ_max = .0029 K m / T
+
+    2) Stephan-Boltzmann's law - Hotter objects overall emit more light at all
+    frequencies per unit area.
+        - Refers to the total energy given off by a black body
+
+        I_tot == F == σ T^4
+
+    When you graph Intensity vs wavelength for a black body such as a star, the
+    overall shape of the graph corresponds to the black body model, but there
+    are inconsistencies at specific wavelengths which deviate from the model,
+    they are called "absorption features".
+
+    When a photon hits an atom with the exact amount of energy needed to raise
+    an electron to the next energy state, then the photon will be absorbed and
+    the electron will raise to a more-excited energy state.
+
+    Each type of atom has a unique set of energy levels, so gaps in a wavelength
+    graph will correspond to the particular atom that absorbed those wavelengths
+    of light from the blackbody, leaving a chemical fingerprint of the
+    composition of gasses in a star's atmosphere ... or any other matter that
+    might be blocking the path of the light.
+
+    -- I assume that we can determine the composition of a gas/dust cloud by
+    comparing the absorption signatures of stars visible behind the cloud ...
+    any patterns that appear for all stars visible behind the cloud are likely
+    signatures of atoms in the cloud?
+
+    -- Downward energy transitions produce a chemical fingerprint of emission
+    lines
+
+
+    Doppler Effect 
+    
+    Z = Δλ/λ_rest = ( λ_obs - λ_rest )/λ_rest = v/c, where v is
+    the relative velocity away from us and c is the speed of light.
+
+May 23, 2023
+
+    Telescope Formulae
+
+        Magnification
+
+            M = ( focal length of objective lens ) / ( focal length of eyepiece lens )
+
+        The larger the collecting area, the more information the telescope gathers
+
+            Area = ( pi/4 ) * D^2
+
+        Angular resolution
+
+            Angular resolution theta is a function of the diameter of the
+            telescope and the λ ... The ultimate resolution is determined by the
+            interference of light waves within a telescope
+
+        Diffraction-limited angular resolution:
+
+            θ = 2.5E5 λ / D
+            λ, D are in meters
+
+            - ideal is small λ and large D
+        
+            - Atmospheric turbulence can cause distortion and reduce angular
+            resolution
+        
+    Telescope types:
+        - refracting - large and long, point up, so not feasible for large telescopes
+        - reflecting telescopes use mirrors
+
+    instruments in telescopes:
+        Photometers measure intensity Cameras or CCDs (Charged Coupled Devices),
+        with filters to choose wavelength Spectrographs split light into the
+        wavelength spectrum and measure the intensity at each wavelength
+
+        astronomers also measure intensity vs time
+
+    Idea: circumsolar satellite array: send off satellites which propel
+    themselves towards the sun and away from Earth's orbit a small distance, and
+    then enter solar orbit. We build up a circumsolar array of satellites which
+    function as an orbit-wide telescope, and also enable solar-system-wide
+    communications for communicating with mars and beyond when it is on the
+    other side of the sun from us. If they orbit faster than us, we will be able
+    to fill the array easily with timed release and also service/replace any
+    particular satellite as we go by.
+
+    Notes on MEGA-MASERS AND GALAXIES:
+
+         Abstract
+
+            Definitions/terms
+
+                AGN: active galactic nuclei 
+                
+                Seyfert2 spectral characteristic: sharp spike on the emission graph,
+                not much doppler spread whereas seyfert 1 would have both narrow and
+                broad emission signatures as well, indicating a mix of high-velocity
+                gas and low velocity gas. E.G., our field of view is not blocked by
+                dust clouds with Seyfert 1, as the galaxy is viewed top-down,
+                whereas the galaxy is viewed from the side for seyfart 2
+
+                LINER spectral characteristic: weak emission characteristics,
+                associated with nebulas which have not been ionized as much. 
+
+                Very Long Baseline Interferometry (VLBI) A technique of using
+                multiple telescopes around the world to view the same object, then
+                combining the result for a world-wide effective telescope diameter.
+
+                level population - the energy level of particles in a gas.
+
+                Inverted level population - abnormally excited level population
+                - does not occur when thermal equilibrium is achievable  
+
+            Summary of Abstract:
+        
+                Masers seem to be produced near new stars. It is assumed that
+                masers are produced by fields of gas which is abnormally excited
+                (Inverted level population)... which can occur because of the
+                low density of cosmic gas preventing thermal equilibrium. Masers
+                are formed when the inverted population gas releases its energy
+                as light in a specific wavelength of microwave radiation.
+                
+                MegaMasers come from the active center of galaxies, and are
+                assumed to be associated with accretion disks of supermassive
+                black holes. The megamasers come from gas that is at relatively
+                high density (though still low enough to prevent thermal
+                equilibrium) 
+
+                Water megamasers are found within a few lightyears of the center
+                of the galaxy, while hydroxyl megamasers come from
+                star-formation fields within a few hundred lightyears of the
+                center of the galaxy. 
+
+                Water megamasers have seyfert 2 and LINER type spectral
+                features, and are associated with spiral and sometimes
+                elliptical galaxies (which also suggests central galactic
+                black-hole activity?)
+
+                Hydroxyl megamasers are associated with IR galaxies and the
+                brightness of the megamaser is proportional to the brightness of
+                the galaxy's IR emission.
+
+                VLBI is used to get high-resolution spectral analysis of masers,
+                which is possible because of how bright the masers are. The
+                resolution is good enough to compare different regions separated
+                under 1 parsec.
+
+                Megamasers are also amazing tools for determining the distance
+                to the galaxy due to the brightness and high spatial resolution
+                possible.
+
+                The purpose of the paper is to give evidence that star-forming
+                dust exposed to intense IR galaxy-light typically forms OH
+                megamasers. The paper also speculates that during the early
+                universe, when IR radiation from young stars was much more
+                prevalent, mega maser formation was also more prevalent,
+                possibly forming masers of larger orders of magnitude than
+                currently observed. If that is the case, then future surveys of
+                deep space may reveal such gigamasers from the distant past. 
+                That would be very useful for a data point in determining the
+                rate of expansion of space.
+
+            Summary of section 1:
+
+                Masers require 3 things:
+
+                1) population inversion (with an energy source) 
+                
+                2) velocity coherence - the molecules that will produce the
+                maser must be moving in about the same direction and at about
+                the same speed from our vantage point.
+
+                3) the two above conditions must be met over a significant
+                length through the molecule field so as to create an
+                amplification of the microwaves.
+
+                There are two types of Pumping mechanisms:
+
+                1) collisional pumping: collisions between molecules create the
+                high-energy state. Collisional pumping has an upper bound on the
+                intensity of maser that can be produced by increasing the
+                density of gas.
+
+                2) radiative pumping: IR photons are absorbed by the molecules
+
+                "The IR spectral energy distribution of dust emission from star
+                forming regions typically peaks at 60 μm to 100 μm,
+                corresponding to much lower dust temperature, at 30–50 K. This
+                suggests that the source of OH maser emission has to be quite
+                close to the energy and heating source, and therefore spatially
+                relatively confined." pg 632 S1.3
+
+                Masers need gaseous water. Gaseous water is rare except in
+                diffuse gas clouds and in star nurseries.
+                
+                In figure 2, it is noted that all the masers have a small
+                velocity spread with their neighbors, and that they are all near
+                energy sources.
+
+                Interstellar masers are brighter than masers near stars
+
+                So far, we have looked at masers from The Galaxy.
+                Now, we turn to masers from other galaxies.
+
+                Until the 1970's, we did not have the sensitivity to detect
+                intergalactic masers. After that, masers were detected from
+                galactic sources that were similar to masers from star forming
+                regions in our own galaxy.
+
+                Then in 1979, an extragalactic maser 10x as strong as masers from our
+                Galaxy was observed.
+
+
+                Other similar very bright masers were found
+                At first it was thought that the high intensity was from many
+                masers acting together, but becuase the signal varied in time,
+                that was not likely.
+
+                It was proposed that extragalactic masers form in gas around an
+                active galactic nucleus, which is on a scale orders of magnitude
+                larger than the masers around stars in our galaxy. The energy
+                source for extragalactic masers is the galactic core itself.
+
+                That proposal was not accepted until evidence was found in a
+                galaxy where it was observed that 
+
+
+
+            Questions: 
+
+                1) would a high incidence of microwave masers have an effect on
+                water-based planets in the local area? ... since microwaves are
+                known to be absorbed by and heat up water.
+
+                2) *why* do astronomers use cm as a common unit of measurement
+                of the size of astronomical distances? *why*
+
+                3) Figure 2 shows the positions and velocities of H2o masers. Many
+                masers in the same vicinity have similar velocities. Is that an
+                example of the velocity coherence mentioned?
+
+                4) On page 634, it refers to "In 1979, unexpectedly strong emission
+                (10 Jy) from an edge-on galaxy" ... hold on, I thought that the
+                strongest possible masers would be produced by galaxies we saw
+                from above the disk, such that dust in the disk did not block
+                our view.
+
+        SQL
+
+            Sql (Structured query language) is a programming language to ask a
+            database for its records. For SDSS, each record is the information
+            of a single observation of a single object in the sky.
+
+            The database is a series of tables. Each table contains one type of
+            data. (for example about the spectrum of an object) Each table has a
+            series of columns. The column could store position, or magnitude or
+            intensity.
+            
+            ```
+                select ra,dec, objTypeName
+                from specObj
+                where ra BETWEEN 194.25 and 194.75 AND
+                dec BETWEEN 2.5 and 2.75 AND
+                objType = 0
+            ```    
+
+            Schema Browser lets you discover what data is where.
+            http://cas.sdss.org/dr7/en/help/browser/browser.asp
+            
+
+                
+
+
+
+
+
+
