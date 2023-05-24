@@ -334,30 +334,35 @@ May 23, 2023
                 from above the disk, such that dust in the disk did not block
                 our view.
 
-        SQL
+    SQL
 
-            Sql (Structured query language) is a programming language to ask a
-            database for its records. For SDSS, each record is the information
-            of a single observation of a single object in the sky.
+        Sql (Structured query language) is a programming language to ask a
+        database for its records. For SDSS, each record is the information
+        of a single observation of a single object in the sky.
 
-            The database is a series of tables. Each table contains one type of
-            data. (for example about the spectrum of an object) Each table has a
-            series of columns. The column could store position, or magnitude or
-            intensity.
-            
-            ```
-                select ra,dec, objTypeName
-                from specObj
-                where ra BETWEEN 194.25 and 194.75 AND
-                dec BETWEEN 2.5 and 2.75 AND
-                objType = 0
-            ```    
+        The database is a series of tables. Each table contains one type of
+        data. (for example about the spectrum of an object) Each table has a
+        series of columns. The column could store position, or magnitude or
+        intensity.
+        
+        ```
+            select ra,dec, objTypeName
+            from specObj
+            where ra BETWEEN 194.25 and 194.75 AND
+            dec BETWEEN 2.5 and 2.75 AND
+            objType = 0
+        ```    
 
-            Schema Browser lets you discover what data is where.
-            http://cas.sdss.org/dr7/en/help/browser/browser.asp
-            
+        Schema Browser lets you discover what data is where.
+        http://cas.sdss.org/dr7/en/help/browser/browser.asp
+        
+May 24 2023
 
-                
+    Continuing SQL ...
+
+    
+
+
 
 
 
