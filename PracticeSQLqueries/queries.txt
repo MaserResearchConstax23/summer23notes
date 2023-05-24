@@ -6,12 +6,12 @@ is between 194.25 and 194.75 and the dec is between 2.25 and 2.75. About how
 many objects did the query return? Does this seem to make sense, given the
 smaller area you searched here?
 
-
+```
 select ra, dec, specObjID, objTypeName
 from SpecObj
 where ra BETWEEN 194.25 and 194.75 AND
 dec BETWEEN 2.25 and 2.75
-
+```
 
 
 Practice 2. Which of the objects you found in Practice 1 are galaxies?
@@ -23,13 +23,13 @@ symbol, you will see the various values that column may have. For instance, the
 quasars, etc. Modify your query so that it returns the ra, dec, and best object
 ID for galaxies (and only galaxies) whose ra is between 194.25 and 194.75 and
 whose dec is between 2.25 and 2.75.
-
+```
 select ra, dec, specObjID, objTypeName
 from SpecObj
 where ra BETWEEN 194.25 and 194.75 AND
 dec BETWEEN 2.25 and 2.75 AND
 objTypeName = 'GALAXY'
-
+```
 
 
 
@@ -39,13 +39,13 @@ Write a query to search for galaxies between ra = 194.9 and ra = 195.1 brighter
 than g = 18.0 for which u - g > 2.2. Retrieve the Object ID, ra, dec, and the
 five final magnitudes.
 
-
+```
 select objID,ra,dec,u,g,r,i,z
 from PhotoObj
 where ra BETWEEN 194.9 and 195.1 AND
 g > 18.0 AND
 u-g > 2.2
-
+```
 
 
 Practice 4. What are the highest-redshift quasars in the SDSS database?
@@ -57,25 +57,25 @@ classified as high-redshift quasars. Retrieve each quasar's Photo ID, ra, dec,
 and redshift.
 
 
-
+```
 select bestObjID,z,zconf, specClass
 from SpecObj
 where z > 4.5 AND
 zconf > .35 AND
 specClass = 3 OR specClass = 4
-
+```
 How many results do you get?
-
+```
 select COUNT(*) as result_count
 from SpecObj
 where z > 4.5 AND
 zconf > .35 AND
 specClass = 3 OR specClass = 4
-
-
+```
+```
 result_count
 7875
-
+```
 
 Practice 5. How can you look up image data, plates and spectra of moderately
 bright nearby galaxies?
@@ -84,7 +84,7 @@ Write a query to find galaxies for which we have spectra that have g magnitude
 between 17 and 17.4 and redshift less than 0.05. For each galaxy, retrieve the
 object ID, the five magnitudes (u,g,r,i,z), the redshift, the plate/MJD number,
 and the fiber number.
-
+```
 select PhotoObj.g as g_mag,
 PhotoObj.objID as ID,
 PhotoObj.u as u_mag,
@@ -97,7 +97,7 @@ SpecObj.fiberID as Fiber_Num
 from PhotoObj,SpecObj
 where PhotoObj.g BETWEEN 17 and 17.4 AND
 SpecObj.z < .05
-
+```
 
 
 Practice 6. What types (templates) of quasars have high redshifts?
@@ -107,7 +107,7 @@ Write a query to find the template number matched to all high redshift quasars
 Redshifts table. Retrieve the objects' ra, dec, u, g, r, i, z, redshift, and
 tempno.
 
-
+```
 select red.specObjID,
 red.tempNo,
 SpecObj.specObjID,
@@ -124,4 +124,38 @@ from SpecObj, XCRedshift red, PhotoObj
 where SpecObj.specObjID = red.specObjID AND
 PhotoObj.objID = SpecObj.bestObjID AND
 SpecObj.z > 2.5
+```
+
+
+Practice 7. What are the northernmost and southernmost objects with spectra
+measured by the SDSS?
+
+```
+SELECT bestObjID,dec
+FROM SpecObj
+WHERE dec = (SELECT MIN(dec) FROM SpecObj) OR
+dec = (SELECT MAX(dec) FROM SpecObj)
+ORDER BY dec ASC
+```
+
+Practice 8. What is the redshift of the nearest galaxy whose spectrum was
+measured by the SDSS with high (35%) confidence? Use the equation
+
+cz = H0d
+
+to find the distance to the galaxy in light-years. The speed of light, c, is 1
+light-year per year. The constant H0, called the Hubble constant, is about 70
+km/s/Mpc, or 7.11 x 10-11 / yr.
+
+Compare the distance you found to the distances to the Andromeda Galaxy (2
+million light-years) and the Whirlpool Galaxy (37 million light-years). Does the
+distance you found seem reasonable?
+
+SELECT z AS redshift, objTypeName AS ObjectType, bestObjID AS id, z/(7.11E-11) AS Dist
+FROM SpecObj
+WHERE objTypeName = 'GALAXY' AND
+zConf > 35 AND
+z = (SELECT MIN(z) FROM SpecObj WHERE zConf > 35 AND objTypeName = 'GALAXY')
+
+-- this returns no objects found. What am I doing wrong?
 
