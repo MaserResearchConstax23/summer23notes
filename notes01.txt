@@ -368,14 +368,50 @@ May 24 2023
         and for PhotoObj:
         http://cas.sdss.org/dr7/en/help/howto/search/commonsearch.asp#top
 
-        
+        Copy a table to my own database
+
+        SELECT *
+        FROM ConstantinResearchGroup.anconsta.CLASS_subset_Satyapal22
+        INTO MyDB.CLASS_subset_Satyapal22
+
+
+        start with an comparison radius of 5 arcsec
     
+    Databases
 
+        MCPMaser2020 - All masers know to man as of 2020 (about 180)
 
+        AllSurveyed2021_NoDup - a bunch of
+        surveyed galaxies with and without masers
 
+    https://skyserver.sdss.org/CasJobs/MyDB.aspx
 
+    Goal 1:
+        Compare the two databases, and get a database of galaxies without masers.
 
+        sql functions
+        SQRT()
+        COS(a) - cos of angle a in radians 
+        POWER(a,b) a^b
+        PI()
+        use the small angle approximation of angular distance
 
+        theta = SQRT((POWER( ( ( ra_a - ra_b )*( COS( dec_a )) ),2) )+(POWER(( dec_a - dec_b ),2)))
 
+        where ra_a, ra_b, and dec_a, dec_b are in radians
 
+        to convert from degrees to radians, multiply deg by (PI()/180)
 
+        theta = ( SQRT((POWER( ( ( (ra_a * (PI()/180)) - (ra_b * (PI()/180)) )*( COS( (dec_a * (PI()/180)) )) ),2) )+(POWER(( (dec_a * (PI()/180)) - (dec_b * (PI()/180)) ),2))) ) * (180/PI())
+
+        so now theta is in degrees.
+
+        We want to use a search radius of x arcsec, so that is x/3600 degrees
+
+        if theta < search radius, then the two objects are the same
+
+        if there is an object in both tables, then we don't want it.
+
+        English version 1
+        for each database record in AllSurveyed2021_NoDup,
+        if the dec distance is within 5/3600 degrees of 

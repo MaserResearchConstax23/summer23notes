@@ -154,8 +154,5 @@ distance you found seem reasonable?
 SELECT z AS redshift, objTypeName AS ObjectType, bestObjID AS id, z/(7.11E-11) AS Dist
 FROM SpecObj
 WHERE objTypeName = 'GALAXY' AND
-zConf > 35 AND
-z = (SELECT MIN(z) FROM SpecObj WHERE zConf > 35 AND objTypeName = 'GALAXY')
-
--- this returns no objects found. What am I doing wrong?
-
+zConf > .35 AND
+z = (SELECT MIN(z) FROM SpecObj WHERE zConf > .35 AND objTypeName = 'GALAXY')
