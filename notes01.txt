@@ -483,3 +483,7 @@ May 30 2022
             ----------------------------------------
 
             My goal is to get a no masers table. 
+
+            I have worked on use_np_csv, it is becoming my main notebook for analysis of data. It will be the notebook which gets a no_masers table
+
+            So far, I have gotten to the stage of querying NED to determine if a duplicate is a duplicate.
