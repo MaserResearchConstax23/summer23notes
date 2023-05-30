@@ -415,3 +415,71 @@ May 24 2023
         English version 1
         for each database record in AllSurveyed2021_NoDup,
         if the dec distance is within 5/3600 degrees of 
+
+        -- continued in code --
+
+
+May 30 2022
+
+    Last week, I used the angular separation of two sky points to find
+    "duplicates" in the no duplicates table by comparing their angular separation.
+
+    This produces duplicates and non-duplicates. I cannot use angular separation
+    alone since there are good data galaxies separated by an angular separation
+    smaller than the supposed angular separation of duplicate objects.
+
+    To achieve meaningful data quality without throwing away good data, I will
+    have to use python and compare the names of the objects.
+
+    Today, I need to compare ConstantinResearchGroup.mcpikeej.nonmasers_noduplicates
+    which has been cleansed of duplicates to my method of finding duplicates. 
+
+        -- copy the database:
+            ```
+            SELECT *
+            FROM ConstantinResearchGroup.mcpikeej.nonmasers_noduplicates
+            INTO MyDB.mcpikeej_nonmasers_noduplicates
+            ```
+
+        -- run the distance comparison:
+            ```
+            SELECT  t1.sourcename AS P_Name,
+            t1.count2019_01 AS entryID1,
+            t1.ra AS P_ra, 
+            t1.dec AS P_dec,
+            t2.sourcename AS S_Name,
+            t2.count2019_01 AS entryID2,
+            t2.ra AS S_ra,
+            t2.dec AS S_dec
+
+            FROM mcpikeej_nonmasers_noduplicates t1, mcpikeej_nonmasers_noduplicates t2
+
+            WHERE
+            -- the two objects are not the same literal entry
+            t1.sourcename <> t2.sourcename AND
+            -- ensure that each pair is returned only once
+            t1.count2019_01 < t2.count2019_01 AND
+            -- the distance between a pair is less than the threshold
+            (0.5/3600.0) > ( SQRT((POWER( ( ( (t1.ra * (PI()/180.0)) - (t2.ra * (PI()/180.0)) )*( COS( (t1.dec * (PI()/180.0)) )) ),2) )+(POWER(( (t1.dec * (PI()/180.0)) - (t2.dec * (PI()/180.0)) ),2))) ) * (180.0/PI())
+            ```
+
+            this returns 73 pairs. I made compare_two_objects_with_ned.ipynb to
+            check ned for two objects. It seems many of the duplicates found by
+            distance are in fact duplicates.
+
+            for example, searching NED for NGC1144 gives: Results for object NGC 1144 (NGC1142)
+            which is AKA NGC1142
+
+            so,
+            radius of .125 arcsec gives 36 pairs
+            radius of .25 arcsec gives 40 pairs
+            radius of .5 arcsec gives 73 pairs
+            radius of 1 arcsec gives 82 pairs,
+            radius of 2 arcsec gives 89 pairs,
+            radius of 4 arcsec gives 111 pairs.
+
+            My guess is that there are at least 60 duplicates in the data.
+
+            ----------------------------------------
+
+            My goal is to get a no masers table. 
