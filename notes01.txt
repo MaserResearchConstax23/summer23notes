@@ -487,3 +487,24 @@ May 30 2022
             I have worked on use_np_csv, it is becoming my main notebook for analysis of data. It will be the notebook which gets a no_masers table
 
             So far, I have gotten to the stage of querying NED to determine if a duplicate is a duplicate.
+May 31st 2023
+
+    I have finished the NED data cleansing script. I decided to make it its own
+    script so it can be used for other datasets, not just maser comparison
+
+June 1st
+    I read the Class paper. Of the data surveyed from SDSS, only 0.027% of the
+    galaxies displayed coronal line emissions consistent with AGN activity.
+
+    Therefore we can make the prediction that a similar percentage of galaxies
+    in other datasets, which are also subsets of the SDSS, will be found in the
+    coronal line signature (CLASS) database.
+
+    TL;DR, we would be lucky to find one maser galaxy in the CLASS database.
+    (remember to only get the subset of masers in SDSS)
+
+    Unless ... there is a correlation between being a maser-producing galaxy and
+    being a coronal emission galaxy.
+
+    Next step is to cleanse some data. Then, make nonmasers. Then, make
+    predictions. Then, get SDSS subsets of -> masers and -> nonmasers.
