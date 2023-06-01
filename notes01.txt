@@ -506,5 +506,13 @@ June 1st
     Unless ... there is a correlation between being a maser-producing galaxy and
     being a coronal emission galaxy.
 
-    Next step is to cleanse some data. Then, make nonmasers. Then, make
+    Next step is to cleanse some data. [DONE] 
+    
+    Then, make nonmasers. [NEXT]
+    
+    Then, make
     predictions. Then, get SDSS subsets of -> masers and -> nonmasers.
+
+    Note: astropy.search_around_sky seems to not catch everything the first
+    time. I keep being able to run the cleanser and still get (diminishing)
+    results.
