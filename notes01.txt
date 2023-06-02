@@ -538,4 +538,53 @@ June 2nd
         Once I have my new SDSS subset databases, I should re-make the
         predictions above.
 
+    -- Select all supposed masers from all_surveyed where the radius of
+    definition is less than 5 and greater than 1 arcsec 
+    
+    SELECT * FROM
+    all_surveyed_no_dupes_cleansed4x S WHERE 
+        S.[mcp_count] IN (
+            SELECT S.[mcp_count]
+            FROM all_surveyed_no_dupes_cleansed4x S, MCPMaser2020 M
+            WHERE
+            -- Small angular distance approximation
+            (5.0/3600.0) > ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[RA_(J2000)] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[Dec_(J2000)] * (PI()/180.0)) ),2))) ) * (180.0/PI()) AND
+            (1.0/3600.0) < ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[RA_(J2000)] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[Dec_(J2000)] * (PI()/180.0)) ),2))) ) * (180.0/PI())
+        )
+
+    -- returns 13 results
+
+    -- Select all supposed masers from all_surveyed where the radius of
+    definition is less than 5 and greater than 3 arcsec 
+
+    -- returns 2 results
+
+
+    SELECT *
+    FROM MCPMaser2020 M
+    WHERE 
+        M.[count2019] IN (
+            SELECT M.[count2019]
+            FROM all_surveyed_no_dupes_cleansed4x S, MCPMaser2020 M
+            WHERE
+            -- Small angular distance approximation
+            (5.0/3600.0) > ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[RA_(J2000)] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[Dec_(J2000)] * (PI()/180.0)) ),2))) ) * (180.0/PI()) AND
+            (1.0/3600.0) < ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[RA_(J2000)] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[Dec_(J2000)] * (PI()/180.0)) ),2))) ) * (180.0/PI())
+        )
+
+
+
+    SELECT *
+    FROM MCPMaser2020 M
+    WHERE 
+        M.[count2019] IN (
+            SELECT M.[count2019]
+            FROM all_surveyed_no_dupes_cleansed4x S, MCPMaser2020 M
+            WHERE
+            -- Small angular distance approximation
+            (6.0/3600.0) > ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[RA_(J2000)] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[Dec_(J2000)] * (PI()/180.0)) ),2))) ) * (180.0/PI()) AND
+            (5.0/3600.0) < ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[RA_(J2000)] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[Dec_(J2000)] * (PI()/180.0)) ),2))) ) * (180.0/PI())
+        )
+
+
     
