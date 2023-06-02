@@ -516,3 +516,26 @@ June 1st
     Note: astropy.search_around_sky seems to not catch everything the first
     time. I keep being able to run the cleanser and still get (diminishing)
     results.
+June 2nd
+
+    make nonmasers 
+    [DONE]
+
+    make predictions:
+        ~.027% of objects in non_masers will be in the CLASS database.
+            Since the nonmasers database has 4934 objects, that is about 1 or 2
+            objects.
+        About .027% of objects in masers will be in CLASS database.
+            Since the masers database has 180 objects, that is .05 objects.
+            There is a 1 in 20 chance that there will be any masers in the CLASS
+            database. If we find significantly than that number of masers in the
+            CLASS database, then we can assume that there is some correlation
+            between masers and CLASS database objects
+    [DONE]
+    
+    Next, get SDSS subsets of masers and nonmasers. This is important because
+    CLASS is a subset of SDSS.
+        Once I have my new SDSS subset databases, I should re-make the
+        predictions above.
+
+    
