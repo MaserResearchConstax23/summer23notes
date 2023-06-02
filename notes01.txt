@@ -467,8 +467,8 @@ May 30 2022
             check ned for two objects. It seems many of the duplicates found by
             distance are in fact duplicates.
 
-            for example, searching NED for NGC1144 gives: Results for object NGC 1144 (NGC1142)
-            which is AKA NGC1142
+            for example, searching NED for NGC1144 gives: Results for object NGC
+            1144 (NGC1142) which is AKA NGC1142
 
             so,
             radius of .125 arcsec gives 36 pairs
@@ -484,7 +484,9 @@ May 30 2022
 
             My goal is to get a no masers table. 
 
-            I have worked on use_np_csv, it is becoming my main notebook for analysis of data. It will be the notebook which gets a no_masers table
+            I have worked on use_np_csv, it is becoming my main notebook for
+            analysis of data. It will be the notebook which gets a no_masers
+            table
 
             So far, I have gotten to the stage of querying NED to determine if a duplicate is a duplicate.
 May 31st 2023
@@ -587,4 +589,3 @@ June 2nd
         )
 
 
-    
