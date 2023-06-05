@@ -589,3 +589,11 @@ June 2nd
         )
 
 
+June 5th
+    -- Creates a subset of all_surveyed that is also in the SDSS database. 
+    SELECT S.*, M.objID as objID
+    FROM all_surveyed_no_dupes_cleansed4x S, DR18.PhotoObj M
+    WHERE 
+        -- Small angular distance approximation
+        (5.0/3600.0) > ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[ra] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[dec] * (PI()/180.0)) ),2))) ) * (180.0/PI())
+    INTO myDB.all_surveyed_in_SDSS_DR18
