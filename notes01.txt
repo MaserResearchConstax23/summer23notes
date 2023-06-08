@@ -590,10 +590,232 @@ June 2nd
 
 
 June 5th
-    -- Creates a subset of all_surveyed that is also in the SDSS database. 
-    SELECT S.*, M.objID as objID
-    FROM all_surveyed_no_dupes_cleansed4x S, DR18.PhotoObj M
+    -- Creates a subset of all_surveyed_no_masers that is also in the SDSS database. 
+    SELECT S.*, M.specObjID as specObjID, M.bestObjID as bestObjID, M.plateID as plateID, M.fiberID as fiberID, M.mjd as mjd
+    FROM all_surveyed_cleansed4x_no_maser_no_duplicates S, DR8.SpecObjAll M
     WHERE 
         -- Small angular distance approximation
         (5.0/3600.0) > ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[ra] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[dec] * (PI()/180.0)) ),2))) ) * (180.0/PI())
-    INTO myDB.all_surveyed_in_SDSS_DR18
+    INTO myDB.all_surveyed_no_maser_in_SDSS_DR8_potential_dup_bestobjid
+
+
+
+    -- Creates a subset of masers that is also in the SDSS database. 
+    SELECT M.*, S.specObjID as specObjID, S.bestObjID as bestObjID, S.plateID as plateID, S.fiberID as fiberID, S.mjd as mjd
+    FROM MCPMaser2020 M, DR8.SpecObjAll S
+    WHERE
+    -- Small angular distance approximation
+    (5.0/3600.0) > ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[RA_(J2000)] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[Dec_(J2000)] * (PI()/180.0)) ),2))) ) * (180.0/PI())
+    INTO myDB.masers_in_SDSS_DR8_potential_dup_bestobjid
+
+
+
+    While that's running, lets see just how many masers are in CLASS:
+
+    SELECT S.*, C.SPECOBJID as SpecObjID
+    FROM MCPMaser2020 M, CLASS_subset_Satyapal22 C
+    WHERE
+    -- Small angular distance approximation
+    (6.0/3600.0) > ( SQRT((POWER( ( ( (M.[RA_(J2000)] * (PI()/180.0)) - (C.[RA] * (PI()/180.0)) )*( COS( (M.[Dec_(J2000)] * (PI()/180.0)) )) ),2) )+(POWER(( (M.[Dec_(J2000)] * (PI()/180.0)) - (C.[DEC] * (PI()/180.0)) ),2))) ) * (180.0/PI())
+
+        count2019	Source_Name	    RA_(J2000)	Dec_(J2000)	Vsys_(km/s)	Lum	Class	SpecObjID
+        117	        NGC_4922	    195.355	    29.31389	7056	    200	?	    2264320011294238720
+        126	        NGC_5347	    208.3242	33.49083	2335	    32	?	    2383626653969442816
+        140	        CGCG_164-019	221.4033	27.03472	8963	    30	?	    2411797517822879744
+        141	        NGC_5765b	    222.7146	5.114444	8333	    ?	D	    2060464800869148672
+        158	        J1658+3923	    254.5646	39.39139	10290	    672	?	    712824968039131136
+
+
+    -- remove duplicates of masers in SDSS maser subset by count2019
+        SELECT t.*
+        FROM (
+            SELECT T.*, ROW_NUMBER() OVER (PARTITION BY count2019 ORDER BY specObjID) AS row_num
+            FROM masers_in_SDSS_DR8_potential_dup_bestobjid T
+        ) t
+        WHERE t.row_num = 1
+        INTO masers_in_SDSS_DR8_no_dup
+    
+    -- returns 64 results
+
+    Predictions:
+
+    We have 64 unique masers in the SDSS database (DR8). If only 0.027% of those
+    are CLASS database objects, then that means that there should be .0173
+    masers in the CLASS database, assuming there is no correlation between
+    masers and CLASS objects. In other words, we should have about 1.7 out of a
+    hundred chance to find masers in the CLASS catalogue
+
+    Notes:
+
+    masers_in_SDSS_DR8_potential_dup_bestobjid has duplicates of count2019 and
+    bestobjID masers_in_SDSS_DR8_no_dup throws out those duplicates, but does
+    not necassarily keep the specobjIDs that are in CLASS. Therefore, when
+    comparing specObjIds, use masers_in_SDSS_DR8_potential_dup_bestobjid.
+
+    SELECT M.*
+    FROM masers_in_SDSS_DR8_potential_dup_bestobjid M, CLASS_subset_Satyapal22 C
+    WHERE M.specObjID = C.SPECOBJID
+
+    This gives 5 unique objects that are in CLASS and are masers. 5/.0173 =
+    289.35 So, a CLASS object (which is typically an AGN) is 289x more likely to
+    contain a maser than random sampling would predict.
+
+    -- Make sure CLASS has no object duplicates
+    SELECT C.*, S.bestObjID
+    FROM DR8.SpecObjAll S, CLASS_subset_Satyapal22 C
+    WHERE C.SPECOBJID = S.specObjID
+    INTO Class_with_bestobjids
+
+June 6th
+
+    -- create MCPMaser2023
+
+    SELECT M.count2019 as UID,
+    M.Source_Name,
+    M.[RA_(J2000)] as ra,
+    M.[Dec_(J2000)] as dec,
+    M.[Vsys_(km/s)] as Vsys_in_km_per_s,
+    M.Lum as Lum_2020,
+    M.Class as objClass_sym,
+    CASE
+        WHEN M.Class = '?' THEN 0
+        WHEN M.Class IN ('SF', 'SF?') THEN 1
+        WHEN M.Class = 'J' THEN 2
+        WHEN M.Class IN ('D+J', 'D?J', 'D+J') THEN 3
+        WHEN M.Class IN ('D?', 'D+?', 'D+') THEN 4
+        WHEN M.Class = 'D' THEN 5
+    END AS objClass_int
+
+    FROM MCPMaser2020 M
+    INTO MCPMaser2023
+
+
+    Used data_from_latex.ipynb to convert the latex data of the 2018 paper with masers into a csv.
+    I edited the headers by hand.
+
+June 7th
+
+    SELECT
+        UID,
+        Source_Name,
+        ra,
+        dec,
+        CASE
+            WHEN lum_from_2018_paper > COALESCE(TRY_CAST(Lum_2020 AS DECIMAL(10, 2)), 0.0) THEN lum_from_2018_paper
+            ELSE COALESCE(TRY_CAST(Lum_2020 AS DECIMAL(10, 2)), 0.0)
+        END AS bestLum,
+        Vsys_in_km_per_s,
+        Lum_2020,
+        objClass_sym,
+        objClass_int,
+        lum_from_2018_paper,
+        Dist_from_2018_paper,
+        Name_in_2018_paper_db
+
+    FROM
+        MCPMasers2023_w_lum2018
+    INTO MCPMasers2023_w_lum2018_bestlum
+
+
+
+
+
+    -- remove duplicates of masers in SDSS nomaser subset by mcp_count
+    SELECT t.*
+    FROM (
+        SELECT T.*, ROW_NUMBER() OVER (PARTITION BY mcp_count ORDER BY specObjID) AS row_num
+        FROM all_surveyed_no_maser_in_SDSS_DR8_potential_dup_bestobjid T
+    ) t
+    WHERE t.row_num = 1
+    INTO Nomasers_in_SDSS_DR8_no_dup
+    
+    -- returns 2363 results
+
+    Predictions:
+
+    We have 2363 unique nonmasers in the SDSS database (DR8). If only 0.027% of
+    those are CLASS database objects, then that means that there should be .63
+    nonmasers in the CLASS database. In other words, we should have about 1 out
+    of 2 chance to find nonmasers in the CLASS catalogue.
+
+
+    SELECT M.*
+    FROM all_surveyed_no_maser_in_SDSS_DR8_potential_dup_bestobjid M, CLASS_subset_Satyapal22 C
+    WHERE M.specObjID = C.SPECOBJID
+
+    This returns 35 objects, much more than expected.
+    
+
+June 8 
+
+    MCPMaser2023 has some errors with string-matching with the luminosity from
+    the 2018 paper. I will import the CSV file into libreOffice calc, and fix
+    those few errors by hand.
+        > for each maser which I noticed was not matched properly, I checked if
+        I could find it in the 2018 paper, and if not, I corrected the CSV 
+        
+        > for each maser that my string matching script could not match, I
+        checked if I could match it in the 2018 paper by ctrl-f, I found 1 or
+        two that I could batch by hand that way.
+
+    
+    SELECT N.*, O.specObjID, O.bestObjID, O.plateID, O.fiberID, O.mjd
+    FROM masers_in_SDSS_DR8_potential_dup_bestobjid O, MCPMaser2023 N
+    WHERE O.Source_Name = N.Source_Name
+    INTO masers_in_SDSS_DR8_potential_dup_bestobjid_with_lum
+
+
+    SELECT N.*, O.specObjID, O.bestObjID, O.plateID, O.fiberID, O.mjd
+    FROM masers_in_SDSS_DR8_no_dup O, MCPMaser2023 N
+    WHERE O.Source_Name = N.Source_Name
+    INTO masers_in_SDSS_DR8_no_dup_with_lum
+
+
+    -- I will run the masers_in_SDSS query again, just to be sure that there are
+    the same number of objects as in my current table. It is possible I used 6
+    arcsec to create the current table rather than the 5 that I should have used.
+
+    -- Creates a subset of masers that is also in the SDSS database. 
+    SELECT M.*, S.specObjID as specObjID, S.bestObjID as bestObjID, S.plateID as plateID, S.fiberID as fiberID, S.mjd as mjd
+    FROM MCPMaser2023 M, DR8.SpecObjAll S
+    WHERE
+    -- Small angular distance approximation
+    (5.0/3600.0) > ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[ra] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[dec] * (PI()/180.0)) ),2))) ) * (180.0/PI())
+
+    if I used 5 arcsec, it should return 71 results. > It does return 71
+    results; my original data was good.
+
+    Next, cross reference my masers and non-masers with Class again, verifying PLATE, MJD, and FIBERID
+    
+    ==========================
+    SELECT M.*
+    FROM masers_in_SDSS_DR8_potential_dup_bestobjid_with_lum M, CLASS_subset_Satyapal22 C
+    WHERE M.specObjID = C.SPECOBJID and M.plateID = C.PLATE and M.fiberID = C.FIBERID and M.mjd = C.MJD
+    ==========================
+
+    This returns 0 objects, and only works when I only compare specObjID. Lets find out why.
+    ==========================
+    SELECT  M.specObjID As M_spec, 
+            C.SPECOBJID as C_spec, 
+            M.plateID as M_plate,
+            C.PLATE as C_plate,
+            M.fiberID as M_fiber,
+            C.FIBERID as C_fiber,
+            M.mjd as M_mjd,
+            C.MJD as C_mjd
+    FROM masers_in_SDSS_DR8_potential_dup_bestobjid_with_lum M, CLASS_subset_Satyapal22 C
+    WHERE M.specObjID = C.SPECOBJID
+    
+    ==========================
+
+    The results:
+
+    M_spec	            C_spec	            M_plate	            C_plate	M_fiber	C_fiber	M_mjd	C_mjd
+    2060464800869148672	2060464800869148672	2060396906026133504	1830	247	    247	    54560	54560
+    2264320011294238720	2264320011294238720	2264184771364022272	2011	492	    492	    53499	53499
+    2383626653969442816	2383626653969442816	2383530171824105472	2117	351	    351	    54115	54115
+    2411797517822879744	2411797517822879744	2411677671055452160	2142	436	    436	    54208	54208
+    712824968039131136	712824968039131136	712694675911239680	633	    474	    474	    52079	52079
+
+    ==========================
+    Sooo... why are the plate IDs different?
