@@ -775,14 +775,14 @@ June 8
     the same number of objects as in my current table. It is possible I used 6
     arcsec to create the current table rather than the 5 that I should have used.
 
-    -- Creates a subset of masers that is also in the SDSS database. 
-    SELECT M.*, S.specObjID as specObjID, S.bestObjID as bestObjID, S.plateID as plateID, S.fiberID as fiberID, S.mjd as mjd
-    FROM MCPMaser2023 M, DR8.SpecObjAll S
-    WHERE
-    -- Small angular distance approximation
-    (5.0/3600.0) > ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[ra] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[dec] * (PI()/180.0)) ),2))) ) * (180.0/PI())
+        -- Creates a subset of masers that is also in the SDSS database. 
+        SELECT M.*, S.specObjID as specObjID, S.bestObjID as bestObjID, S.plateID as plateID, S.fiberID as fiberID, S.mjd as mjd
+        FROM MCPMaser2023 M, DR8.SpecObjAll S
+        WHERE
+        -- Small angular distance approximation
+        (5.0/3600.0) > ( SQRT((POWER( ( ( (S.[ra] * (PI()/180.0)) - (M.[ra] * (PI()/180.0)) )*( COS( (S.[dec] * (PI()/180.0)) )) ),2) )+(POWER(( (S.[dec] * (PI()/180.0)) - (M.[dec] * (PI()/180.0)) ),2))) ) * (180.0/PI())
 
-    if I used 5 arcsec, it should return 71 results. > It does return 71
+    if I used 5 arcsec, it should return 71 results. ... It does return 71
     results; my original data was good.
 
     Next, cross reference my masers and non-masers with Class again, verifying PLATE, MJD, and FIBERID
@@ -819,3 +819,65 @@ June 8
 
     ==========================
     Sooo... why are the plate IDs different?
+
+        > Because I needed SpecObjAll.plate, not SpecObjAll.PlateID. Thats easy to fix:
+
+        -- Step 1: Add a new column to the existing table
+        ALTER TABLE masers_in_SDSS_DR8_potential_dup_bestobjid_with_lum
+        ADD plate smallint
+        go
+        -- Step 2: Update the values of the new column based on a join with DR8.SpecObjAll
+        UPDATE masers_in_SDSS_DR8_potential_dup_bestobjid_with_lum
+        SET plate = S.plate
+        FROM DR8.SpecObjAll S
+        WHERE masers_in_SDSS_DR8_potential_dup_bestobjid_with_lum.specObjID = S.specObjID
+
+        =====
+
+        -- Step 1: Add a new column to the existing table
+        ALTER TABLE masers_in_SDSS_DR8_no_dup_with_lum
+        ADD plate smallint
+        go
+        -- Step 2: Update the values of the new column based on a join with DR8.SpecObjAll
+        UPDATE masers_in_SDSS_DR8_no_dup_with_lum
+        SET plate = S.plate
+        FROM DR8.SpecObjAll S
+        WHERE masers_in_SDSS_DR8_no_dup_with_lum.specObjID = S.specObjID
+
+        =====
+
+        -- Step 1: Add a new column to the existing table
+        ALTER TABLE all_surveyed_no_maser_in_SDSS_DR8_potential_dup_bestobjid
+        ADD plate smallint
+        go
+        -- Step 2: Update the values of the new column based on a join with DR8.SpecObjAll
+        UPDATE all_surveyed_no_maser_in_SDSS_DR8_potential_dup_bestobjid
+        SET plate = S.plate
+        FROM DR8.SpecObjAll S
+        WHERE all_surveyed_no_maser_in_SDSS_DR8_potential_dup_bestobjid.specObjID = S.specObjID
+
+    Now that I actually have the plate number, lets run the comparison again:
+
+    =================================
+    SELECT M.*
+    FROM masers_in_SDSS_DR8_potential_dup_bestobjid_with_lum M, CLASS_subset_Satyapal22 C
+    WHERE M.specObjID = C.SPECOBJID and M.plate = C.PLATE and M.fiberID = C.FIBERID and M.mjd = C.MJD
+    INTO Masers_In_Class
+    =================================
+    Lets do the comparison for nonmasers:
+
+    SELECT M.*
+    FROM all_surveyed_no_maser_in_SDSS_DR8_potential_dup_bestobjid M, CLASS_subset_Satyapal22 C
+    WHERE M.specObjID = C.SPECOBJID and M.plate = C.PLATE and M.fiberID = C.FIBERID and M.mjd = C.MJD
+    INTO NonMasers_In_Class
+
+    I also need to get how many unique objects are in SDSS and in nonmasers:
+
+            -- remove duplicates of masers in SDSS nomaser subset by mcp_count
+            SELECT t.*
+            FROM (
+                SELECT T.*, ROW_NUMBER() OVER (PARTITION BY mcp_count ORDER BY specObjID) AS row_num
+                FROM all_surveyed_no_maser_in_SDSS_DR8_potential_dup_bestobjid T
+            ) t
+            WHERE t.row_num = 1
+            INTO Nomasers_in_SDSS_DR8_no_dup
