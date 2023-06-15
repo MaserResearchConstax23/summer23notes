@@ -881,3 +881,107 @@ June 8
             ) t
             WHERE t.row_num = 1
             INTO Nomasers_in_SDSS_DR8_no_dup
+
+Jun 13
+    results:
+        Masers:
+
+            FM = 5 CLASS masers / 64 SDSS surveyed masers = .078
+            7.8% of surveyed masers in SDSS are in CLASS
+
+            Error (assuming error in counting is sqrt of counted value):
+                CM = 5, TM = 64
+                dCM = sqrt(5) = 2.24, dTM = sqrt(64) = 8
+                dFM = abs(FM)*sqrt((dCM/CM)^2+(dTM/TM)^2)
+                dFM = .078*sqrt((2.24/5)^2+(8/64)^2) = .0363
+            With error:
+                7.8% +/- (3.6%) of surveyed masers in SDSS are in CLASS
+        Nonmasers:
+
+            FN = 35 CLASS nonmasers / 2363 SDSS surveyed nonmasers = .0148
+            1.48% of surveyed nonmasers in SDSS are in CLASS
+
+            Error (assuming error in counting is sqrt of counted value)
+                CN = 35, TN = 2363
+                dCN = sqrt(35) = 5.92, dTN = sqrt(2363) = 48.61
+                            dFN = abs(FN)*sqrt((dCN/CN)^2+(dTN/TN)^2)
+                dFN = abs(.0148)*sqrt((5.92/35)^2+(48.61/2363)^2) = .0148 * sqrt(.0286 + 4.23E-4) = .0025
+            With Error:
+                1.48% +/- (.25%) of surveyed nonmasers in SDSS are in CLASS
+
+                
+
+        Notes/conclusions:
+
+            get how much more likely a maser is to be a CLASS object than a nonmaser from the survey:
+
+                7.8% +/- (3.6%)  /   1.48% +/- (.25%)
+
+                F = 7.8/1.48 = 5.27
+                M = 7.8 , N = 1.48
+                dM = 3.6 , dN = .25
+
+                dF = abs(5.27) * sqrt( ( 3.6/7.8 )^2 + ( .25/1.48 )^2 ) = 5.27 * sqrt( 2.13 + .0285 ) = 7.74
+
+
+
+
+            From the subset of the survey which was in SDSS DR8, an object was
+            5.2 +/- (7.74) times more likely to be in CLASS if it was a maser than if it
+            was a nonmaser.
+
+            Because the uncertainty includes 0 percent, we would need more data
+            to be sure that a maser has a statistically significant higher
+            chance to be a CLASS object than a nonmaser. However, there seems to
+            be a significant difference between masers and nonmasers, possibly
+            5x more likely for a maser to be.
+
+
+
+        SELECT C.SPECOBJID,
+            C.N_CL_DETECT,
+            C.FEXI_7892_LOGL,
+            C.SXII_7609_LOGL,
+            C.FEX_6374_LOGL,
+            C.FEVII_6087_LOGL,
+            C.FEVII_5720_LOGL,
+            C.ARX_5533_LOGL,
+            C.FEVI_5335_LOGL,
+            C.CAV_5309_LOGL,
+            C.FEXIV_5303_LOGL,
+            C.FEVII_5276_LOGL,
+            C.FEVI_5176_LOGL,
+            C.FEVII_5159_LOGL,
+            C.FEVI_5146_LOGL,
+            C.FEVII_4893_LOGL,
+            C.FEV_4181_LOGL,
+            C.FEV_3891_LOGL,
+            C.FEV_3839_LOGL,
+            C.FEVII_3759_LOGL,
+            C.NEV_3426_LOGL,
+            C.NEV_3346_LOGL,
+            C.ARIII_7135_LOGL,
+            C.SII_6731_LOGL,
+            C.SII_6717_LOGL,
+            C.NII_6584_LOGL,
+            C.H_ALPHA_LOGL,
+            C.NII_6548_LOGL,
+            C.OI_6302_LOGL,
+            C.HEI_5876_LOGL,
+            C.OIII_5007_LOGL,
+            C.OIII_4959_LOGL,
+            C.H_BETA_LOGL,
+            C.OIII_4363_LOGL,
+            C.H_GAMMA_LOGL,
+            C.H_DELTA_LOGL,
+            C.NEIII_3869_LOGL,
+            C.OII_3729_LOGL,
+            C.OII_3726_LOGL
+        FROM CLASS_subset_Satyapal22 C, Masers_In_Class M
+        WHERE C.SPECOBJID = M.specObjID
+
+June 15th
+
+    One maser is a Disk; the other four are completely unknown, so we cannot really say much about their diskiness
+
+    
