@@ -984,4 +984,107 @@ June 15th
 
     One maser is a Disk; the other four are completely unknown, so we cannot really say much about their diskiness
 
-    
+June 20th
+
+    3.125% +/- 2.24% of masers have the Fe XI 7892 coronal line, while only 0.127 % +/- .073% of nonMasers have that line.
+
+    6.25 % +/- 3.22% of masers have both Fe X 6374 Coronal line and Fe VII 6087 coronal line, while only 1.1 % +/- .22 % of nonmasers have these lines
+
+    7.81 % +/- 3.63 % of masers have Fe VII 5720 Coronal line, while only 1.14 % +/- .22% of nonmasers have that line.
+
+    While not statistically significant, it is noteworthy that of the 5 masers with coronal lines, one had Ca V 5309 coronal line detection, while no nonmaser had that detection.
+
+June 22
+
+    What were we going to use maser luminosity for?
+
+    Get Cosmic wall or void data
+
+        SELECT S.vflag, S.NSAID, M.*
+        FROM masers_in_SDSS_DR8_potential_dup_bestobjid_with_lum M, void_catalog_anish S
+        WHERE
+        S.PLATE = M.plate AND
+        S.FIBERID = M.fiberID AND
+        S.MJD = M.mjd
+        INTO Masers_in_SDSS_with_location 
+
+        --> finds 54 masers with void_catalog_anish counterparts, vs 64 unique masers
+        
+        24/54 are in a cosmic wall. 44.4% +/- 10.9%
+        10/54 are in a cosmic void. 18.5% +/- 6.4%
+        15/54 are in an edge, 27.8% +/- 8.1% (within the SDSS DR7 main survey footprint, but not in a void and too close to the edge to definitively classify as a wall)
+        5/54, 9.3% +/- 4.3%, are outside the SDSS DR7 main survey footprint
+
+
+
+
+        SELECT S.vflag, S.NSAID, M.*
+        FROM all_surveyed_no_maser_in_SDSS_DR8_potential_dup_bestobjid M, void_catalog_anish S
+        WHERE
+        S.PLATE = M.plate AND
+        S.FIBERID = M.fiberID AND
+        S.MJD = M.mjd
+        INTO NonMasers_in_SDSS_with_location 
+
+        --> finds 2197 masers with void_catalog_anish counterparts vs 2,363 unique nonmasers
+        
+        1071/2197 are in a cosmic wall. 48.7% +/- 1.8%
+        460/2197 are in a cosmic void. 20.9% +/- 1.1%
+        417/2197 are in an edge, 19.0% +/- 1.0% (within the SDSS DR7 main survey footprint, but not in a void and too close to the edge to definitively classify as a wall)
+        248/2197 11.3% +/- 0.8% are outside the SDSS DR7 main survey footprint
+
+        CONCLUSION: There is no discernable correlation between a galaxy hosting a maser and its location in a cosmic void or wall.
+
+June 25 2023
+
+    Let megamasers be defined as masers with lum > 10^2 L
+
+    Goal: get Megamaser location data as above, and Disk Maser location data as above
+
+    Megamasers as defined by solar luminosity > 10
+
+        SELECT S.vflag, S.NSAID, M.*
+        FROM masers_in_SDSS_DR8_potential_dup_bestobjid_with_lum M, void_catalog_anish S
+        WHERE
+        S.PLATE = M.plate AND
+        S.FIBERID = M.fiberID AND
+        S.MJD = M.mjd AND
+        M.bestLum > 10
+        INTO MegaMasers_10L_in_SDSS_with_location 
+
+            SELECT *
+            FROM MegaMasers_10L_in_SDSS_with_location
+            WHERE vflag = 9
+
+        --> finds 41 megamasers with void catalog counterparts
+        20/41 are in wall = 48.8% +/- 13.3%
+        7/41 are in void = 17.1% +/- 7.0%
+        10/41 are inconclusive = 24.4% +/- 8.6%
+        4/41 are unknown = 9.8% +/- 5.1%
+
+    Disk masers with any disk classification
+
+        SELECT S.vflag, S.NSAID, M.*
+        FROM masers_in_SDSS_DR8_potential_dup_bestobjid_with_lum M, void_catalog_anish S
+        WHERE
+        S.PLATE = M.plate AND
+        S.FIBERID = M.fiberID AND
+        S.MJD = M.mjd AND
+        M.objClass_int = 3 OR M.objClass_int = 4 OR M.objClass_int = 5
+        INTO DiskMasers_obj345_in_SDSS_with_location
+
+            SELECT *
+            FROM DiskMasers_obj345_in_SDSS_with_location
+            WHERE vflag = 0
+            
+        --> finds 9 Disk masers with void catalog counterparts (there are 11 disk masers in the masers catalog)
+        6/9 are in wall = 66.7% +/- 35.1%
+        0/9 are in void = 0% +/- undefined error
+        1/9 are inconclusive = 11.1% +/- 11.7%
+        2/9 are unknown = 22.2% +/- 17.4%
+
+        While there is a significant possibility that Disk masers exist exclusively in walls based on these results, the counting error is too high to say anything with confidence.
+
+        
+        
+
