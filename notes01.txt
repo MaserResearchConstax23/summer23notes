@@ -1089,8 +1089,8 @@ June 25 2023
 
 June 29
     TODO: 
-    [ ] Finish histograms in IP_and_crit_density_histograms.ipynb ( overlay histogram results ) and do the same for critical density from the Reefe 2023 et al.
-    [ ] optical data as described in email
+    [*] Finish histograms in IP_and_crit_density_histograms.ipynb ( overlay histogram results ) and do the same for critical density from the Reefe 2023 et al.
+    [*] optical data as described in email
     
 
 July 7
@@ -1171,3 +1171,4 @@ O3Hb = log10('OIII_5007_flux' / 'H_beta_flux')
 N2Ha = log10('NII_6584_flux' / 'H_alpha_flux')
 S2Ha = log10(('SII_6717_flux' + 'SII_6731_flux') / 'H_alpha_flux')
 O1Ha = log10('OI_6300_flux' / 'H_alpha_flux')
+
