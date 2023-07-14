@@ -1086,5 +1086,88 @@ June 25 2023
         While there is a significant possibility that Disk masers exist exclusively in walls based on these results, the counting error is too high to say anything with confidence.
 
         
-        
 
+June 29
+    TODO: 
+    [ ] Finish histograms in IP_and_crit_density_histograms.ipynb ( overlay histogram results ) and do the same for critical density from the Reefe 2023 et al.
+    [ ] optical data as described in email
+    
+
+July 7
+
+SELECT MPA.MPA_index,
+        1 AS is_maser,
+        MPA.z,
+        MPA.v_disp, 
+        MPA.kcor_rmag, 
+        MPA.D4000, 
+        MPA.H_alpha_flux, 
+        MPA.OIII_5007_flux, 
+        LOG10(MPA.H_alpha_flux/MPA.H_beta_flux) AS HaHb, 
+        LOG10(MPA.OIII_5007_flux/MPA.H_beta_flux) AS O3Hb, 
+        LOG10(MPA.NII_6584_flux/MPA.H_alpha_flux) AS N2Ha, 
+        LOG10((MPA.SII_6717_flux + MPA.SII_6731_flux)/H_alpha_flux) AS S2Ha, 
+        LOG10(MPA.OI_6300_flux/MPA.H_alpha_flux) AS O1Ha,
+        maser_Lum,
+        maser_morph_class 
+FROM Masers_in_MPA MPA, 
+
+UNION ALL
+SELECT MPA_index,
+        0 AS is_maser,
+        z,
+        v_disp, 
+        kcor_rmag, 
+        D4000, 
+        H_alpha_flux, 
+        OIII_5007_flux, 
+        LOG10(H_alpha_flux/H_beta_flux) AS HaHb, 
+        LOG10(OIII_5007_flux/H_beta_flux) AS O3Hb, 
+        LOG10(NII_6584_flux/H_alpha_flux) AS N2Ha, 
+        LOG10((SII_6717_flux + SII_6731_flux)/H_alpha_flux) AS S2Ha, 
+        LOG10(OI_6300_flux/H_alpha_flux) AS O1Ha,
+        maser_Lum,
+        maser_morph_class 
+
+
+FROM Nonmasers_in_MPA
+
+
+
+
+
+
+
+
+MPA data ( https://wwwmpa.mpa-garching.mpg.de/SDSS/DR7/raw_data.html ): [z],
+[z_err], [v_disp], [v_disp_err], [kcor_mag], [kcor_model_mag] are from the MPA
+Info table ( https://wwwmpa.mpa-garching.mpg.de/SDSS/DR7/SDSS_info.html ).
+[Lick_Hd_A], [Lick_Hd_A_err], [D4000], [D4000_err], [D4000_n], [D4000_n_err] are
+from the MPA index table (
+https://wwwmpa.mpa-garching.mpg.de/SDSS/DR7/SDSS_indx.html ). [_flux],
+[_flux_err], [_eqw], [_eqw_err] come from the MPA line table (
+https://wwwmpa.mpa-garching.mpg.de/SDSS/DR7/SDSS_line.html ). The line names
+included are: 'H_alpha', 'H_beta', 'OIII_5007', 'OI_6300', 'NII_6584',
+'SII_6717', 'SII_6731' 
+
+
+[KEY] UID: A unique entry identifier for sorting
+purposes; Source_Name: The object name from MCPMaser2020; Name_in_2018_paper_db:
+If available, the name from the 2018 paper, null if not available; ra: from
+MCPMaser2020; dec: from MCPMaser2020; bestLum: The best numerical luminosity, in
+L(.), from preferentially the 2018 paper or the MCPMaser2020 value, or 0 if
+unavailable; Lum_2020: the MCPMaser2020 lum value as a text entry;
+lum_from_2018_paper: the 2018 paper lum value if available, 0 if not;
+Dist_from_2018_paper: the calculated distance from the 2018 paper, 0 if
+unavailable; Vsys_in_km_per_s: from MCPMaser2020, a text entry; objClass_sym:
+the object type from MCPMaser2020; objClass_int: Based on objClass_sym,
+0=unknown, 1="SF" or "SF?", 2="J" (Jet), 3="D+J", 4 = "D?" or "D+?" or
+"D+",5="D";
+
+
+
+HaHb = log10('H_alpha_flux' / 'H_beta_flux')
+O3Hb = log10('OIII_5007_flux' / 'H_beta_flux')
+N2Ha = log10('NII_6584_flux' / 'H_alpha_flux')
+S2Ha = log10(('SII_6717_flux' + 'SII_6731_flux') / 'H_alpha_flux')
+O1Ha = log10('OI_6300_flux' / 'H_alpha_flux')
