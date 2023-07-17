@@ -1,0 +1,20 @@
+A holy grail of astronomy is being about to definitively measure the distances
+to galaxies independent of one's universal model, allowing astronomers to refine
+and test their models. Galactic masers sources are celestial objects which
+provide such a rare opportunity. Masers unidirectional bright radiation sources
+at a single microwave wavelength (22.2 GHz). As masers, which are emitted by
+particulate clouds, orbit a galaxy's central black hole, their visible emission
+is redshifted and blueshifted by their rotational speed, allowing precise
+measurements of the distance to the galaxy and the mass of the black hole. All
+we must do to tap this vital source of data about our universe is to find these
+disk maser sources; however, that has proven difficult. We only know of around
+180 maser sources, a few of which orbit black holes in a disk shape. We suspect
+that Active Galactic Nuclei (Black Holes which are actively accreting dust and
+gas) may provide the powerful energy source required for maser emission. There
+are several established AGN detection methods. This study attempts to further
+the knowledge of maser source properties by comparing known masers with detected
+AGN properties, with the hope of enabling astronomers to better find useful
+maser sources. We compare masers to AGN detection via coronal line emission and
+find a small but significant correlation between coronal-line-AGN and maser
+emission. We also explore Mid-infrared AGN detection as well as the location of
+masers in cosmic walls or voids.
