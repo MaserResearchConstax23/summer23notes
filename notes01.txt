@@ -1172,3 +1172,10 @@ N2Ha = log10('NII_6584_flux' / 'H_alpha_flux')
 S2Ha = log10(('SII_6717_flux' + 'SII_6731_flux') / 'H_alpha_flux')
 O1Ha = log10('OI_6300_flux' / 'H_alpha_flux')
 
+
+
+
+July 21 
+
+    The story
+    Seperate slides for exploring each area of interest and results
